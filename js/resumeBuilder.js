@@ -8,7 +8,7 @@ var bio = {
         "twitter": "@mo3az01",
         "location": "Cairo"
     },
-    "bioPic": "images/moaz.png",
+    "biopic": "images/moaz.png",
     "skills": ["Android", "Java", "Front-End", "Back-End "],
     "welcomeMessage": "Dear recuriter hope to find your requirment in my cv"
 };
@@ -17,7 +17,7 @@ var education = {
             name: "Cairo University",
             location: "Giza",
             degree: "BA",
-            majors: "CS",
+            majors: ["CS","IT"],
             dates: "2013",
             url: "https://cu.edu.eg/ar/Home"
         },
@@ -25,12 +25,12 @@ var education = {
             name: "Abo bakr el sedek",
             location: "El Abasya",
             degree: "Graduated",
-            majors: "Thanwya 3ama",
+            majors: ["Math"],
             dates: "2009",
             url: "https://www.facebook.com/%D9%85%D8%AF%D8%B1%D8%B3%D9%87-%D8%A7%D8%A8%D9%88-%D8%A8%D9%83%D8%B1-%D8%A7%D9%84%D8%B5%D8%AF%D9%8A%D9%82-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6%D9%8A%D9%87-%D8%A7%D9%84%D8%AA%D8%AC%D8%B1%D9%8A%D8%A8%D9%8A%D9%87-202183456487646/"
         }
     ],
-    "onlineCourse": [{
+    "onlineCourses": [{
             "title": "Android Nanodegree",
             "school": "Udacity",
             "dates": "2016-2017",
@@ -65,17 +65,20 @@ var projects = {
     "projects": [{
             "title": "Orange Travel",
             "dates": "2/2015-8/2015",
-            "description": "Monitoring useage consumption while traveling"
+            "description": "Monitoring useage consumption while traveling",
+            "images": ["images/otravel.webp"]
         },
         {
             "title": "My Network",
             "dates": "10/2015-5/2016",
-            "description": "control wifi hotspots on popular places"
+            "description": "control wifi hotspots on popular places",
+            "images": ["images/mynetwork.jpg","images/mynetwork2.jpg"]
         },
         {
             "title": "Video Conference",
             "dates": "9/2016-11/2016",
-            "description": "Like hangout"
+            "description": "Like hangout",
+            "images": []
         }
     ]
 };
@@ -86,11 +89,10 @@ bio.display = function() {
     $("#header").prepend(HTMLheaderName.replace("%data%", bio.name));
     // contacts
     Object.keys(bio.contacts).forEach(function(key) {
-        $("#topContacts").append(HTMLcontactGeneric.replace("%data%", bio.contacts[key]).replace("%contact%", key));
-        $('#footerContacts').append(HTMLcontactGeneric.replace("%data%", bio.contacts[key]).replace("%contact%", key));
+        $("#topContacts, #footerContacts").append(HTMLcontactGeneric.replace("%data%", bio.contacts[key]).replace("%contact%", key));                                        
     });
     // pic
-    $("#header").append(HTMLbioPic.replace("%data%", bio.bioPic));
+    $("#header").append(HTMLbioPic.replace("%data%", bio.biopic));
     // welcome message
     $("#header").append(HTMLwelcomeMsg.replace("%data%", bio.welcomeMessage));
     //skills
@@ -113,6 +115,7 @@ work.display = function() {
         $(".work-entry:last").append(employerTitle);
         $(".work-entry:last").append(HTMLworkDates.replace("%data%", elem.dates));
         $(".work-entry:last").append(HTMLworkDescription.replace("%data%", elem.description));
+        $(".work-entry:last").append(HTMLworkLocation.replace("%data%", elem.location));
     }); {
 
     }
@@ -125,6 +128,10 @@ projects.display = function() {
         $(".project-entry:last").append(HTMLprojectTitle.replace("%data%", element.title));
         $(".project-entry:last").append(HTMLprojectDates.replace("%data%", element.dates));
         $(".project-entry:last").append(HTMLprojectDescription.replace("%data%", element.description));
+        element.images.forEach(function(image){
+            $(".project-entry:last").append(HTMLprojectImage.replace("%data%",image));
+            $("img:last").attr("height","200px");
+        });
     });
 };
 projects.display();
@@ -139,12 +146,14 @@ education.display = function() {
         $('a:last').attr('href', element.url);
         $(".education-entry").append(HTMLschoolDates.replace("%data%", element.dates));
         $(".education-entry").append(HTMLschoolLocation.replace("%data%", element.location));
-        $(".education-entry").append(HTMLschoolMajor.replace("%data%", element.majors));
+        element.majors.forEach(function(major){
+            $(".education-entry").append(HTMLschoolMajor.replace("%data%",major));            
+        });
     });
     // online courses
     $("#education").append(HTMLonlineClasses);
     $("#education").append(HTMLschoolStart);
-    education.onlineCourse.forEach(function(element) {
+    education.onlineCourses.forEach(function(element) {
         var title = HTMLonlineTitle.replace("%data%", element.title);
         var school = HTMLonlineSchool.replace("%data%", element.school);
         $(".education-entry:last").append(title + school);
